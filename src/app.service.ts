@@ -110,7 +110,7 @@ export class AppService {
   // функции основного алгоритма расстановки грузов по кузову
   async compositionCheck(dataCarAndCargos): Promise<any> {
     const { car, cargoes, scaleImage } = dataCarAndCargos;
-    // отсекам грузы превышающие высоту кузова учитывая допуск высоты снизу и сверху
+   // отсекаем грузы превышающие высоту кузова учитывая допуск высоты снизу и сверху
     const cargoesHeightResult = cargoesHeight(cargoes, car.h);
     // отсекам грузы размеры которых превышают вместимость кузова
     const cargoesWidthLengthResult = cargoesWidthLength(cargoesHeightResult, car);
@@ -119,7 +119,7 @@ export class AppService {
     const cargoesMass = getCargoesMass(cargoesWidthLengthResult, capacity);
     console.log('cargoesMass', cargoesMass);
     const { placedCargoes, comments } = repeatedPlacedCargoes(cargoesMass, car);
-    // Если у уже рзмещенного груза не имеется соседей по вертикали, то расположить по центру кузова по вертикали
+    // После основного расположения грузов оптимизация. Центрирование груза, если сверху или снизу нет других грузов
     verticalAlign(placedCargoes, car.w);
     // Находим массив объектов грузов, которые не вошли в кузов
     const cargoesExit = cargoes.filter((cargo) => !placedCargoes.some((c) => c.id === cargo.id));
